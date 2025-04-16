@@ -5,6 +5,9 @@ import Cors from "cors";
 import loginFunction from "./routes/login.js";
 import registerFunction from "./routes/register.js";
 import dbConnect from "./db/database.js";
+import postjob from "./routes/jobpost.js";
+import getjobs from "./routes/getjobs.js";
+
 
 dotenv.config();
 
@@ -17,8 +20,10 @@ app.use(express.json());
 app.use(Cors());
 
 //Routes
-app.post("/api/login", loginFunction);
-app.post("/api/register", registerFunction);
+app.post("/api/login", loginFunction); //Login
+app.post("/api/register", registerFunction); //Register
+app.post("/api/postjob", postjob); //Post Job
+app.get("/api/getjobs", getjobs); //Get Jobs
 
 const startServer = async () => {
     try {
