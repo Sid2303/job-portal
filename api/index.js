@@ -7,7 +7,9 @@ import registerFunction from "./routes/register.js";
 import dbConnect from "./db/database.js";
 import postjob from "./routes/jobpost.js";
 import getjobs from "./routes/getjobs.js";
-
+import getjob from "./routes/getjobs.js";
+import deletejob from "./routes/deletejob.js";
+import deleteuser from "./routes/deleteuser.js";
 
 dotenv.config();
 
@@ -22,8 +24,12 @@ app.use(Cors());
 //Routes
 app.post("/api/login", loginFunction); //Login
 app.post("/api/register", registerFunction); //Register
+app.delete("/api/deleteuser/:id", deleteuser); //Delete User
 app.post("/api/postjob", postjob); //Post Job
 app.get("/api/getjobs", getjobs); //Get Jobs
+app.get("/api/getjob/:id", getjob); //Get Job by ID
+app.delete("/api/deletejob/:id", deletejob); //Delete Job by ID
+
 
 const startServer = async () => {
     try {
