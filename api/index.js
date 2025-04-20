@@ -2,9 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import Cors from "cors";
 
+import dbConnect from "./db/database.js";
+
+// Importing routes
 import loginFunction from "./routes/login.js";
 import registerFunction from "./routes/register.js";
-import dbConnect from "./db/database.js";
 import postjob from "./routes/jobpost.js";
 import getjobs from "./routes/getjobs.js";
 import getjob from "./routes/getjob.js";
