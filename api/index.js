@@ -7,9 +7,14 @@ import registerFunction from "./routes/register.js";
 import dbConnect from "./db/database.js";
 import postjob from "./routes/jobpost.js";
 import getjobs from "./routes/getjobs.js";
-import getjob from "./routes/getjobs.js";
+import getjob from "./routes/getjob.js";
 import deletejob from "./routes/deletejob.js";
 import deleteuser from "./routes/deleteuser.js";
+import applyJob from "./routes/applyjob.js";
+import getApplications from "./routes/getapplications.js";
+import deleteApplication from "./routes/deleteapplication.js";
+import updateApplication from "./routes/updateapplication.js";
+import userApplications from "./routes/getuserapplications.js";
 
 dotenv.config();
 
@@ -29,6 +34,13 @@ app.post("/api/postjob", postjob); //Post Job
 app.get("/api/getjobs", getjobs); //Get Jobs
 app.get("/api/getjob/:id", getjob); //Get Job by ID
 app.delete("/api/deletejob/:id", deletejob); //Delete Job by ID
+app.post("/api/applyjob", applyJob); //Apply for Job
+app.get("/api/getapplications/:id", getApplications); // Get applications for a specific job
+app.delete("/api/deleteapplication/:id", deleteApplication); // Delete application by ID
+app.put("/api/userapplication/:id", updateApplication); // Update application by ID
+app.get("/api/userapplications/:userId", userApplications); // Get applications for a specific user
+
+
 
 
 const startServer = async () => {
