@@ -74,15 +74,15 @@ export default function ApplyJobPage() {
 
             {/* Submit Button */}
             <div className="flex justify-center">
-                <Button type="submit" disabled={loading}>
-                {loading ? (
-                    <div className="flex items-center gap-2">
-                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Submitting...
-                    </div>
-                ) : (
-                    "Apply Now"
-                )}
+                <Button type="submit" disabled={loading} className="hover:cursor-pointer">
+                    {loading ? (
+                        <div className="flex items-center gap-2">
+                        <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Submitting...
+                        </div>
+                    ) : (
+                        "Apply Now"
+                    )}
                 </Button>
             </div>
             </form>
