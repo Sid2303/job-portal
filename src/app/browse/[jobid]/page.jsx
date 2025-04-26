@@ -3,15 +3,19 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Button } from "@/components/ui/button"
-
+import { useRouter } from 'next/navigation'
 
 export default function JobDetailsPage() {
     const params = useParams();
     const id = params?.jobid;
-
+    const router = useRouter();
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const handleApply = () => {
+        router.push(`/browse/${id}/apply`);
+    }
 
     useEffect(() => {
         if (!id) return;
@@ -67,7 +71,7 @@ export default function JobDetailsPage() {
                 </div>
                 <p className="text-sm text-gray-500">Posted on: {new Date(job.createdAt).toLocaleDateString()}</p>
             </div>
-            <Button variant="outline" className='w-35 h-15 mt-10 bg-blue-500 text-white'>Button</Button>
+            <Button variant="outline" className='w-35 h-15 mt-10 bg-blue-500 text-white' onClick={handleApply}>Apply</Button>
         </div>
     );
 }
