@@ -12,13 +12,39 @@ export default function JobDetailsPage() {
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userRole, setUserRole] = useState(null);
+
 
     const handleApply = () => {
         router.push(`/browse/${id}/apply`);
     }
 
+    const handleDelete = async () => {
+        const res = await fetch(`http://localhost:4000/api/deletejob/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (res.ok) {
+            alert("Job deleted successfully!");
+            router.push("/browse");
+        } else {
+            alert("Failed to delete job. Please try again.");
+        }
+    }
+
     useEffect(() => {
         if (!id) return;
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user) {
+            setTimeout(() => {
+                router.push("/login");
+            }, 100); // ⏳ Small delay so toast doesn't stack
+            return;
+        }else if (user) {
+            setUserRole(user.role);
+        }
 
         const fetchJobDetails = async () => {
         setLoading(true);
@@ -71,7 +97,13 @@ export default function JobDetailsPage() {
                 </div>
                 <p className="text-sm text-gray-500">Posted on: {new Date(job.createdAt).toLocaleDateString()}</p>
             </div>
-            <Button variant="outline" className='w-35 h-15 mt-10 bg-blue-500 text-white' onClick={handleApply}>Apply</Button>
+            <Button variant="outline" className='w-35 h-15 mt-10 bg-blue-500 text-white hover:cursor-pointer' onClick={handleApply}>Apply</Button>
+            {userRole === "admin" && (
+                <div className="mt-4">
+                    <Button variant="danger" className='w-35 h-15 bg-red-500 text-white hover:cursor-pointer' onClick={handleDelete}>Delete</Button>
+                </div>
+            )}
         </div>
+        
     );
 }
