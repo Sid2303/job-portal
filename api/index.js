@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import Cors from "cors";
 import multer from "multer";
+import session from 'express-session';
 
 import dbConnect from "./db/database.js";
 
@@ -29,6 +30,15 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(express.json());
 app.use(Cors());
+app.use(session({
+    secret: 'yourSecretKeyHere', // 🔥 very important, keep it secret
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false, // Set to true if using https
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+    }
+}));
 
 //Routes
 app.post("/api/login", loginFunction); //Login
