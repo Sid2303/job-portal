@@ -3,6 +3,15 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Button } from "./ui/button";
+
+
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -51,8 +60,23 @@ export default function Navbar() {
             <div className="hidden md:flex space-x-4">
             {user ? (
                 <div className="flex items-center space-x-4">
-                <span className="text-gray-700">Hello, {user.name.split(" ")[0]} 👋</span>
-                <button onClick={handleLogout} className="px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition">Logout</button>
+                    <Popover>
+                        <PopoverTrigger>
+                            <Avatar className="hover:cursor-pointer">
+                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-56 p-4 bg-white shadow-lg rounded-lg">
+                            <Link href="/profile" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 font-medium">
+                                Profile
+                            </Link>
+                            <Button variant="destructive" onClick={handleLogout} className="hover:cursor-pointer mt-2">
+                                Logout
+                            </Button>
+                        </PopoverContent>
+                    </Popover>
+                    <span className="text-gray-700 font-bold">{user.name.split(" ")[0]}</span>
                 </div>
             ) : (
                 <>
@@ -85,7 +109,13 @@ export default function Navbar() {
                 {user ? (
                 <>
                     <span className="block">Hello, {user.name.split(" ")[0]} 👋</span>
-                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition">Logout</button>
+                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition">
+                        Logout
+                    </button>
+                    <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
                 </>
                 ) : (
                 <>
