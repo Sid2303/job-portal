@@ -1,29 +1,33 @@
+// models/ApplicationModel.js
 import mongoose from "mongoose";
 
-const applicationSchema = new mongoose.Schema({
-    jobId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Job",
-        required: true
-    },
-    userId: {
+const applicationSchema = new mongoose.Schema(
+    {
+        userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
-    },
-    resume: {
-        type: String, // You can use a URL or base64 string here
-        required: false
-    },
-    coverLetter: {
-        type: String,
-        required: false
-    },
-    appliedAt: {
+        required: true,
+        },
+        jobId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
+        required: true,
+        },
+        jobTitle: { type: String, required: true },
+        company: { type: String, required: true },
+        location: { type: String, required: true },
+        type: { type: String, required: true },
+        salary: { type: String }, // optional
+        description: { type: String },
+        coverLetter: { type: String, required: true },
+        resumeUrl: { type: String }, // optional
+        appliedAt: {
         type: Date,
-        default: Date.now
-    }
-});
+        default: Date.now,
+        },
+    },
+    { timestamps: true }
+);
 
 const Application = mongoose.model("Application", applicationSchema);
 
