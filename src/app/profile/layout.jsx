@@ -12,6 +12,7 @@ export default function ProfileLayout({ children }) {
         { href: "/profile/settings", label: "Settings" },
         { href: "/profile/applications", label: "My Applications" },
         { href: "/profile/security", label: "Security" },
+        { href: "/profile/postedjobs", label: "Posted Jobs" },
     ];
 
     return (
