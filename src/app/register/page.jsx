@@ -1,101 +1,132 @@
 "use client";
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { toast } from "sonner";
+import { useRouter } from 'next/navigation'; // 🚀 next/navigation for redirection
 import "./styles.css";
 
 export default function RegisterPage() {
-    const [userData, setUserData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        role: 'jobseeker',
-    });
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'jobseeker',
+  });
 
-    // Update state when the form fields change
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData((prevData) => ({
-        ...prevData,
-        [name]: value,
-        }));
-    };
+  const router = useRouter();
 
-    // Handle form submission
-    const registerUser = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-        try {
-        const response = await fetch("http://localhost:4000/api/register", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
-        });
+  const registerUser = async (e) => {
+    e.preventDefault();
 
-        const data = await response.json();
-        if (response.status === 201) {
-            console.log("User registered successfully:", data);
-            // Optionally redirect to login or show success message
-        } else {
-            console.error("Registration failed:", data.message);
-        }
-        } catch (error) {
-        console.error("Error registering user:", error);
-        }
-    };
+    try {
+      const response = await fetch("http://localhost:4000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
 
-    return (
-        <form className="register-form" onSubmit={registerUser}>
-        <h2>Register</h2>
-        <div className="form-group">
-            <label htmlFor="name">Name</label>
+      const data = await response.json();
+
+      if (response.status === 201) {
+        // Save user in localStorage
+        localStorage.setItem("user", JSON.stringify(data.user));
+        window.dispatchEvent(new Event("user-updated"));
+        toast.success("Account created successfully! 🎉");
+
+        // Redirect to homepage after short delay
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
+      } else {
+        toast.error(data.message || "Registration failed.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong! Please try again.");
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+      <form onSubmit={registerUser} className="bg-white p-8 rounded-xl shadow-md w-full max-w-md space-y-6">
+        <h2 className="text-3xl font-bold text-center text-blue-600">Create an Account</h2>
+
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
             <input
-            type="text"
-            id="name"
-            name="name"
-            value={userData.name}
-            onChange={handleChange}
-            required
+              id="name"
+              name="name"
+              type="text"
+              value={userData.name}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-        </div>
-        <div className="form-group">
-            <label htmlFor="password">Password</label>
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
-            type="password"
-            id="password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-            required
+              id="email"
+              name="email"
+              type="email"
+              value={userData.email}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-        </div>
-        <div className="form-group">
-            <label htmlFor="email">Email</label>
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
             <input
-            type="email"
-            id="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-            required
+              id="password"
+              name="password"
+              type="password"
+              value={userData.password}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-        </div>
-        <div className="form-group">
-            <label htmlFor="role">Role</label>
+          </div>
+
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
             <select
-            id="role"
-            name="role"
-            value={userData.role}
-            onChange={handleChange}
-            required
+              id="role"
+              name="role"
+              value={userData.role}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-            <option value="jobseeker">Job Seeker</option>
-            <option value="recruiter">Recruiter</option>
+              <option value="jobseeker">Job Seeker</option>
+              <option value="recruiter">Recruiter</option>
             </select>
+          </div>
         </div>
-        <button type="submit">Register</button>
-        <p>Already have an account? <a href="/login">Login</a></p>
-        </form>
-    );
+
+        <button
+          type="submit"
+          className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+        >
+          Register
+        </button>
+
+        <p className="text-center text-gray-600 text-sm">
+          Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login</a>
+        </p>
+      </form>
+    </div>
+  );
 }

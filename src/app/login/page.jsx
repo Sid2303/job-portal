@@ -1,13 +1,17 @@
-"use client"
+"use client";
 
-import React from 'react'
-import "./styles.css"
+import React, { useState } from 'react';
+import { toast } from "sonner"; // ✅ import toast
+import { useRouter } from "next/navigation"; // ✅ router for redirect
+import "./styles.css";
 
 export default function Page() {
-    const [userData, setUserData] = React.useState({
+    const [userData, setUserData] = useState({
         email: '',
         password: ''
     });
+
+    const router = useRouter(); // ✅ Next.js router
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,14 +36,27 @@ export default function Page() {
             
             if (response.ok) {
                 console.log("✅ Login successful:", data);
-                window.alert("Login successful!");
-                // Optionally: redirect or store token
+
+                // Save user in localStorage
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                // Dispatch custom event to update navbar
+                window.dispatchEvent(new Event("user-updated"));
+
+                toast.success("Login successful! 🎉");
+
+                // Redirect after a small delay
+                setTimeout(() => {
+                    router.push("/");
+                }, 1000);
+
             } else {
                 console.error("❌ Login failed:", data.message);
-                // Show error to user (optional)
+                toast.error(data.message || "Login failed");
             }
         } catch (err) {
             console.error("❌ Error:", err);
+            toast.error("Something went wrong. Please try again.");
         }
     };
 
@@ -55,7 +72,7 @@ export default function Page() {
                     value={userData.email}
                     onChange={handleChange}
                     required
-                    className='border-2 border-black'
+                    className="border-2 border-black p-2 rounded-md"
                 />
             </div>
             <div className="form-group">
@@ -67,10 +84,12 @@ export default function Page() {
                     value={userData.password}
                     onChange={handleChange}
                     required
-                    className='border-2 border-black'
+                    className="border-2 border-black p-2 rounded-md"
                 />
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                Login
+            </button>
         </form>
     );
 }

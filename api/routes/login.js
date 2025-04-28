@@ -1,4 +1,5 @@
 import User from "../models/UserModel.js";
+import bcrypt from "bcryptjs";
 
 const loginFunction = async (req, res) => {
     const { email, password } = req.body;
@@ -9,13 +10,22 @@ const loginFunction = async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        if (user.password === password) {
-            // Only send one response
-            return res.status(200).json({ message: "Login successful", user });
-            console.log("Login successful:", user.username);
-        } else {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
             return res.status(400).json({ message: "Invalid email or password" });
         }
+
+        console.log("Login successful:", user.name);
+
+        return res.status(200).json({
+            message: "Login successful",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
+        });
 
     } catch (err) {
         console.error("Login error:", err);
