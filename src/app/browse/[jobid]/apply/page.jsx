@@ -10,6 +10,7 @@ import { toast } from "sonner";
 export default function ApplyJobPage() {
     const { jobid } = useParams();
     const [coverLetter, setCoverLetter] = useState("");
+    const [resumeUrl, setResumeUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [job, setJob] = useState(null);
     const [user, setUser] = useState(null);
@@ -38,7 +39,7 @@ export default function ApplyJobPage() {
 
     const handleApply = async (e) => {
         e.preventDefault();
-        if (!jobid || !coverLetter || !user) return;
+        if (!jobid || !coverLetter || !user || !job) return;
 
         try {
             setLoading(true);
@@ -50,8 +51,15 @@ export default function ApplyJobPage() {
                 },
                 body: JSON.stringify({
                     jobId: jobid,
-                    userId: user._id, // 👈 real user ID from localStorage
+                    userId: user._id,
+                    jobTitle: job.title,
+                    company: job.company,
+                    location: job.location,
+                    type: job.type,
+                    salary: job.salary || "",
+                    description: job.description || "",
                     coverLetter,
+                    resumeUrl,
                 }),
             });
 
@@ -61,6 +69,7 @@ export default function ApplyJobPage() {
             }
 
             setCoverLetter("");
+            setResumeUrl("");
             toast.success("🎉 Application submitted successfully!");
         } catch (err) {
             console.error("Error applying for job", err);
@@ -81,12 +90,22 @@ export default function ApplyJobPage() {
 
                 <form onSubmit={handleApply} className="space-y-6">
                     <div>
-                        <label className="block mb-2 text-sm font-medium text-gray-700">Cover Letter</label>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">Cover Letter <span className="text-red-500">*</span></label>
                         <Textarea
                             placeholder="Write your cover letter here..."
                             rows={6}
                             value={coverLetter}
                             onChange={(e) => setCoverLetter(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">Resume URL (Optional)</label>
+                        <Input
+                            placeholder="https://yourdomain.com/your-resume.pdf"
+                            value={resumeUrl}
+                            onChange={(e) => setResumeUrl(e.target.value)}
                         />
                     </div>
 
