@@ -19,6 +19,8 @@ import getApplications from "./routes/getapplications.js";
 import deleteApplication from "./routes/deleteapplication.js";
 import updateApplication from "./routes/updateapplication.js";
 import userApplications from "./routes/getuserapplications.js";
+import editJob from "./routes/editjob.js";
+import updateUser from "./routes/updateuser.js";
 
 dotenv.config();
 const upload = multer();
@@ -45,7 +47,7 @@ app.post("/api/login", loginFunction); //Login
 app.post("/api/register", registerFunction); //Register
 app.delete("/api/deleteuser/:id", deleteuser); //Delete User
 app.post("/api/postjob", postjob); //Post Job
-app.get("/api/getjobs", getjobs); //Get Jobs
+app.get("/api/getjobs", getjobs); //Route to get jobs
 app.get("/api/getjob/:id", getjob); //Get Job by ID
 app.delete("/api/deletejob/:id", deletejob); //Delete Job by ID
 app.post("/api/applyjob", upload.none(), applyJob); //Apply for Job
@@ -53,6 +55,8 @@ app.get("/api/getapplications/:id", getApplications); // Get applications for a 
 app.delete("/api/deleteapplication/:id", deleteApplication); // Delete application by ID
 app.put("/api/userapplication/:id", updateApplication); // Update application by ID
 app.get("/api/userapplications/:userId", userApplications); // Get applications for a specific user
+app.put("/api/editjob/:id", editJob); // Edit job route
+app.put("/api/updateuser/:id", updateUser); // Update user route
 
 
 
