@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -11,6 +12,9 @@ export default function SettingsPage() {
         name: "",
         email: "",
         role: "",
+        location: "",
+        bio: "",
+        skills: "",
     });
 
     useEffect(() => {
@@ -22,6 +26,9 @@ export default function SettingsPage() {
                 name: parsed.name || "",
                 email: parsed.email || "",
                 role: parsed.role || "",
+                location: parsed.location || "",
+                bio: parsed.bio || "",
+                skills: parsed.skills || "",
             });
         }
     }, []);
@@ -45,10 +52,10 @@ export default function SettingsPage() {
 
             const updatedUser = await res.json();
             localStorage.setItem("user", JSON.stringify(updatedUser));
-            toast.success("User details updated successfully!");
+            toast.success("User details updated!");
         } catch (err) {
             console.error(err);
-            toast.error("Failed to update user");
+            toast.error("Update failed");
         }
     };
 
@@ -58,25 +65,12 @@ export default function SettingsPage() {
         <div className="max-w-xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <Input
-                    name="name"
-                    placeholder="Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                />
-                <Input
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-                <Input
-                    name="role"
-                    placeholder="Role"
-                    value={formData.role}
-                    onChange={handleChange}
-                    disabled // If you don't want to allow role changes, remove this if needed
-                />
+                <Input name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
+                <Input name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+                <Input name="role" placeholder="Role" value={formData.role} onChange={handleChange} disabled />
+                <Input name="location" placeholder="Location" value={formData.location} onChange={handleChange} />
+                <Textarea name="bio" placeholder="Short bio" value={formData.bio} onChange={handleChange} />
+                <Input name="skills" placeholder="Skills (comma separated)" value={formData.skills} onChange={handleChange} />
                 <Button type="submit" className="w-full">Save Changes</Button>
             </form>
         </div>
