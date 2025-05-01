@@ -21,6 +21,7 @@ import updateApplication from "./routes/updateapplication.js";
 import userApplications from "./routes/getuserapplications.js";
 import editJob from "./routes/editjob.js";
 import updateUser from "./routes/updateuser.js";
+import getJobsByUser from "./routes/getjobbyuser.js";
 
 dotenv.config();
 const upload = multer();
@@ -57,7 +58,7 @@ app.put("/api/userapplication/:id", updateApplication); // Update application by
 app.get("/api/userapplications/:userId", userApplications); // Get applications for a specific user
 app.put("/api/editjob/:id", editJob); // Edit job route
 app.put("/api/updateuser/:id", updateUser); // Update user route
-
+app.get("/api/getjobsbyuser/:userId", getJobsByUser); // Get jobs posted by a specific user
 
 
 

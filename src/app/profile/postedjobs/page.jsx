@@ -27,7 +27,7 @@ export default function JobPosterDashboard() {
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
             setUser(parsedUser);
-            if (parsedUser.role === "jobposter" || parsedUser.role === "admin") {
+            if (parsedUser.role === "recruiter" || parsedUser.role === "admin") {
                 fetchJobs(parsedUser._id);
             } else {
                 setLoading(false);
@@ -35,17 +35,25 @@ export default function JobPosterDashboard() {
         } else {
             setLoading(false);
         }
+        console.log(storedUser)
     }, []);
 
     const fetchJobs = async (userId) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/getjobs?userId=${userId}`);
+            // Call the new route
+            const res = await fetch(`http://localhost:4000/api/getjobsbyuser/${userId}`);
+            
+            if (!res.ok) throw new Error("Failed to fetch jobs");
+            
             const data = await res.json();
+            console.log("User's jobs:", data); // Debug log
             setJobs(data);
         } catch (err) {
             console.error("Error fetching jobs:", err);
+            // Optional: Set an error state to show to the user
         } finally {
             setLoading(false);
+            console.log(jobs)
         }
     };
 
@@ -73,7 +81,7 @@ export default function JobPosterDashboard() {
 
     if (loading) return <div className="p-8">Loading...</div>;
 
-    if (!user || (user.role !== "jobposter" && user.role !== "admin")) {
+    if (!user || (user.role !== "recruiter" && user.role !== "admin")) {
         return <div className="p-8 text-center text-red-500">🔒 This section is locked for your role.</div>;
     }
 
