@@ -1,30 +1,24 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
-import { Button } from "@/components/ui/button"
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
 
 export default function JobDetailsPage() {
-    const params = useParams();
-    const id = params?.jobid;
+    const { jobid: id } = useParams();
     const router = useRouter();
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userRole, setUserRole] = useState(null);
 
-
     const handleApply = () => {
         router.push(`/browse/${id}/apply`);
-    }
+    };
 
     const handleDelete = async () => {
         const res = await fetch(`http://localhost:4000/api/deletejob/${id}`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
         if (res.ok) {
             alert("Job deleted successfully!");
@@ -32,46 +26,36 @@ export default function JobDetailsPage() {
         } else {
             alert("Failed to delete job. Please try again.");
         }
-    }
+    };
 
     useEffect(() => {
         if (!id) return;
+
         const user = JSON.parse(localStorage.getItem("user"));
         if (!user) {
-            setTimeout(() => {
-                router.push("/login");
-            }, 100); // ⏳ Small delay so toast doesn't stack
+            setTimeout(() => router.push("/login"), 100);
             return;
-        }else if (user) {
-            setUserRole(user.role);
         }
+        setUserRole(user.role);
 
         const fetchJobDetails = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const res = await fetch(`http://localhost:4000/api/getjob/${id}`);
-            if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
+            try {
+                const res = await fetch(`http://localhost:4000/api/getjob/${id}`);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                setJob(data);
+            } catch (err) {
+                console.error("Error fetching job details", err);
+                setError("Failed to load job details. Please try again later.");
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setJob(data);
-        } catch (err) {
-            console.error("Error fetching job details", err);
-            setError("Failed to load job details. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
         };
 
         fetchJobDetails();
     }, [id]);
 
-    if (!id) {
-        return <div className="flex justify-center items-center h-screen text-gray-600 text-xl">Loading Job ID...</div>;
-    }
-
-    if (loading) {
+    if (!id || loading) {
         return <div className="flex justify-center items-center h-screen text-gray-600 text-xl">Loading Job Details...</div>;
     }
 
@@ -84,26 +68,51 @@ export default function JobDetailsPage() {
     }
 
     return (
-        <div className="min-h-screen p-8">
-            <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-                <h1 className="text-3xl font-bold mb-4 text-blue-700">{job.title}</h1>
-                <h2 className="text-xl text-gray-600 mb-2">{job.company}</h2>
-                <p className="text-gray-700 mb-4">
-                <span className="font-semibold">Location:</span> {job.location}
-                </p>
-                <div className="mb-4">
-                <span className="font-semibold">Description:</span>
-                <p className="text-gray-800 whitespace-pre-line">{job.description}</p>
+        <div className="min-h-screen p-6 md:p-10 bg-gray-50">
+            <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
+                <h1 className="text-3xl font-bold text-blue-800 mb-2">{job.title}</h1>
+                <h2 className="text-xl text-gray-700 mb-1">{job.company}</h2>
+                <p className="text-gray-500 mb-4">{job.location} • {job.type}</p>
+
+                <div className="space-y-2 text-gray-800">
+                    <p><strong>Salary:</strong> ₹{job.salary}</p>
+                    {job.experience && <p><strong>Experience Required:</strong> {job.experience} years</p>}
+                    {job.skills?.length > 0 && (
+                        <p>
+                            <strong>Skills:</strong> {job.skills.join(", ")}
+                        </p>
+                    )}
                 </div>
-                <p className="text-sm text-gray-500">Posted on: {new Date(job.createdAt).toLocaleDateString()}</p>
+
+                <div className="mt-6">
+                    <h3 className="text-lg font-semibold mb-2">Job Description</h3>
+                    <p className="whitespace-pre-line text-gray-700">{job.description}</p>
+                </div>
+
+                <p className="text-sm text-gray-400 mt-4">Posted on: {new Date(job.createdAt).toLocaleDateString()}</p>
+
+                <div className="flex flex-wrap gap-4 mt-8">
+                    {userRole !== "recruiter" && (
+                        <Button
+                            onClick={handleApply}
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                            Apply Now
+                        </Button>
+                    )}
+
+                    {userRole === "admin" && (
+                        <Button
+                            onClick={handleDelete}
+                            variant="destructive"
+                            className="bg-red-500 hover:bg-red-600 text-white"
+                        >
+                            Delete Job
+                        </Button>
+                    )}
+                </div>
+
             </div>
-            <Button variant="outline" className='w-35 h-15 mt-10 bg-blue-500 text-white hover:cursor-pointer' onClick={handleApply}>Apply</Button>
-            {userRole === "admin" && (
-                <div className="mt-4">
-                    <Button variant="danger" className='w-35 h-15 bg-red-500 text-white hover:cursor-pointer' onClick={handleDelete}>Delete</Button>
-                </div>
-            )}
         </div>
-        
     );
 }
