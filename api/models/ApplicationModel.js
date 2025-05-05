@@ -20,6 +20,8 @@ const applicationSchema = new mongoose.Schema(
         salary: { type: String }, // optional
         description: { type: String },
         coverLetter: { type: String, required: true },
+        applicantName: { type: String, required: true },
+        applicantEmail: { type: String, required: true },
         resumeUrl: { type: String }, // optional
         appliedAt: {
         type: Date,

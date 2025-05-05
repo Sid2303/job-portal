@@ -15,6 +15,11 @@ export default function ApplyJobPage() {
     const [job, setJob] = useState(null);
     const [user, setUser] = useState(null);
 
+    useEffect(() => {
+        if (jobid) fetchJob();
+        fetchUser();
+    }, [jobid]);
+
     const fetchJob = async () => {
         try {
             const res = await fetch(`http://localhost:4000/api/getjob/${jobid}`);
@@ -32,11 +37,6 @@ export default function ApplyJobPage() {
         }
     };
 
-    useEffect(() => {
-        if (jobid) fetchJob();
-        fetchUser();
-    }, [jobid]);
-
     const handleApply = async (e) => {
         e.preventDefault();
         if (!jobid || !coverLetter || !user || !job) return;
@@ -52,6 +52,8 @@ export default function ApplyJobPage() {
                 body: JSON.stringify({
                     jobId: jobid,
                     userId: user._id,
+                    applicantName: user.name,           // ⬅️ Send name
+                    applicantEmail: user.email,         // ⬅️ Send email
                     jobTitle: job.title,
                     company: job.company,
                     location: job.location,
@@ -90,7 +92,9 @@ export default function ApplyJobPage() {
 
                 <form onSubmit={handleApply} className="space-y-6">
                     <div>
-                        <label className="block mb-2 text-sm font-medium text-gray-700">Cover Letter <span className="text-red-500">*</span></label>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                            Cover Letter <span className="text-red-500">*</span>
+                        </label>
                         <Textarea
                             placeholder="Write your cover letter here..."
                             rows={6}
@@ -101,7 +105,9 @@ export default function ApplyJobPage() {
                     </div>
 
                     <div>
-                        <label className="block mb-2 text-sm font-medium text-gray-700">Resume URL (Optional)</label>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                            Resume URL (Optional)
+                        </label>
                         <Input
                             placeholder="https://yourdomain.com/your-resume.pdf"
                             value={resumeUrl}
@@ -110,7 +116,7 @@ export default function ApplyJobPage() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button type="submit" disabled={loading} className="hover:cursor-pointer">
+                        <Button type="submit" disabled={loading}>
                             {loading ? (
                                 <div className="flex items-center gap-2">
                                     <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

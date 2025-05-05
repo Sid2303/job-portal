@@ -1,3 +1,5 @@
+import User from "../models/UserModel.js";
+
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
