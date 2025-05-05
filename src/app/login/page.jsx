@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { toast } from "sonner"; // ✅ import toast
-import { useRouter } from "next/navigation"; // ✅ router for redirect
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import "./styles.css";
 
 export default function Page() {
@@ -61,35 +61,40 @@ export default function Page() {
     };
 
     return (
-        <form className="login-form" onSubmit={loginUser}>
-            <h2>Login</h2>
-            <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={userData.email}
-                    onChange={handleChange}
-                    required
-                    className="border-2 border-black p-2 rounded-md"
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={userData.password}
-                    onChange={handleChange}
-                    required
-                    className="border-2 border-black p-2 rounded-md"
-                />
-            </div>
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                Login
-            </button>
-        </form>
+    <div className='login-page'>
+        <div className='left-side'>
+            <form className="login-form" onSubmit={loginUser}>
+                <h2>Login</h2>
+                <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={userData.email}
+                        onChange={handleChange}
+                        required
+                        className="border-2 border-black p-2 rounded-md"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={userData.password}
+                        onChange={handleChange}
+                        required
+                        className="border-2 border-black p-2 rounded-md"
+                    />
+                </div>
+                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                    Login
+                </button>
+            </form>
+        </div>
+        <div className='right-side'></div>
+    </div>
     );
 }
