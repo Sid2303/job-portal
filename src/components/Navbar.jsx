@@ -124,36 +124,34 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-6 pb-4 space-y-2 border-t border-gray-200 bg-white shadow">
-          <Link href="/" className={linkClass("/")}>
-            Home
-          </Link>
-          <Link href="/browse" className={linkClass("/browse")}>
-            Browse Jobs
-          </Link>
-          <Link href="/postjob" className={linkClass("/postjob")}>
-            Post a Job
-          </Link>
-          <Link href="/about" className={linkClass("/about")}>
-            About
-          </Link>
+        <div className="md:hidden px-6 pb-6 pt-4 space-y-3 border-t border-gray-200 bg-white shadow">
+          <div className="flex flex-col space-y-3">
+            <Link href="/" className={linkClass("/") + " block"}>
+              Home
+            </Link>
+            <Link href="/browse" className={linkClass("/browse") + " block"}>
+              Browse Jobs
+            </Link>
+            <Link href="/postjob" className={linkClass("/postjob") + " block"}>
+              Post a Job
+            </Link>
+            <Link href="/about" className={linkClass("/about") + " block"}>
+              About
+            </Link>
+          </div>
+
           <div className="pt-4 border-t border-gray-100 space-y-3">
             {user ? (
-              <>
-                <span className="block text-gray-700">
-                  Hello, {user.name?.split(" ")[0]} 👋
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition"
-                >
-                  Logout
-                </button>
-              </>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition"
+              >
+                Logout
+              </button>
             ) : (
               <>
                 <Link href="/login">
-                  <button className="w-full text-left px-4 py-2 border mb-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition">
+                  <button className="w-full text-left px-4 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition">
                     Login
                   </button>
                 </Link>
@@ -167,6 +165,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
     </nav>
   );
 }
