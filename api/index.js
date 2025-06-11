@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json());
 app.use(Cors());
 app.use(session({
-    secret: 'yourSecretKeyHere', // 🔥 very important, keep it secret
+    secret: 'yourSecretKeyHere',
     resave: false,
     saveUninitialized: false,
     cookie: {
