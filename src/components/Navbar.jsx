@@ -156,7 +156,7 @@ export default function Navbar() {
                   </button>
                 </Link>
                 <Link href="/register">
-                  <button className="w-full text-left px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                  <button className="w-full text-left px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition mt-2">
                     Register
                   </button>
                 </Link>
