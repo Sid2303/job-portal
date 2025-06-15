@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from "sonner";
-import { useRouter } from 'next/navigation'; // 🚀 next/navigation for redirection
+import { useRouter } from 'next/navigation';
 import "./styles.css";
 
 export default function RegisterPage() {
@@ -41,7 +41,7 @@ export default function RegisterPage() {
         // Save user in localStorage
         localStorage.setItem("user", JSON.stringify(data.user));
         window.dispatchEvent(new Event("user-updated"));
-        toast.success("Account created successfully! 🎉");
+        toast.success("Account created successfully!");
 
         // Redirect to homepage after short delay
         setTimeout(() => {
@@ -58,7 +58,7 @@ export default function RegisterPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <form onSubmit={registerUser} className="bg-white p-8 rounded-xl shadow-md w-full max-w-md space-y-6">
-        <h2 className="text-3xl font-bold text-center text-blue-600">Create an Account</h2>
+        <h2 className="text-3xl font-bold text-center text-purple-600">Create an Account</h2>
 
         <div className="space-y-4">
           <div>
@@ -118,7 +118,7 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+          className="w-full py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition"
         >
           Register
         </button>

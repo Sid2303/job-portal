@@ -17,15 +17,15 @@ export default function ProfileLayout({ children }) {
     return (
         <div className="flex min-h-screen">
         {/* Left Navigation */}
-        <aside className="w-64 bg-blue-700 text-white flex flex-col p-6 space-y-6">
+        <aside className="w-64 bg-purple-700 text-white flex flex-col p-6 space-y-6">
             <h2 className="text-2xl font-bold mb-6">My Profile</h2>
             <nav className="flex flex-col space-y-4">
             {navLinks.map((link) => (
                 <Link 
                 key={link.href} 
                 href={link.href}
-                className={`px-4 py-2 rounded-lg hover:bg-blue-800 transition ${
-                    pathname === link.href ? "bg-blue-900 font-semibold" : ""
+                className={`px-4 py-2 rounded-lg hover:bg-purple-800 transition ${
+                    pathname === link.href ? "bg-purple-900 font-semibold" : ""
                 }`}
                 >
                 {link.label}

@@ -85,7 +85,7 @@ export default function Navbar() {
                   <Button
                     variant="destructive"
                     onClick={handleLogout}
-                    className="w-full"
+                    className="w-full mt-2"
                   >
                     Logout
                   </Button>
@@ -165,7 +165,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-
     </nav>
   );
 }

@@ -96,7 +96,7 @@ export default function JobPosterDashboard() {
                     <p className="mt-4">{job.description}</p>
 
                     <div className="flex gap-4 mt-6">
-                        <Button onClick={() => router.push(`/profile/postedjobs/editjob/${job._id}`)}>Edit</Button>
+                        <Button className="bg-purple-600"onClick={() => router.push(`/profile/postedjobs/editjob/${job._id}`)}>Edit</Button>
 
                         <AlertDialog>
                             <AlertDialogTrigger asChild>

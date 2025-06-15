@@ -52,8 +52,8 @@ export default function ApplyJobPage() {
                 body: JSON.stringify({
                     jobId: jobid,
                     userId: user._id,
-                    applicantName: user.name,           // ⬅️ Send name
-                    applicantEmail: user.email,         // ⬅️ Send email
+                    applicantName: user.name,
+                    applicantEmail: user.email,
                     jobTitle: job.title,
                     company: job.company,
                     location: job.location,
@@ -87,7 +87,7 @@ export default function ApplyJobPage() {
     return (
         <div className="min-h-screen bg-gray-50 px-6 py-12">
             <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
-                <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">Apply for {job.title}</h1>
+                <h1 className="text-3xl font-bold mb-6 text-center text-purple-700">Apply for {job.title}</h1>
                 <p className="text-center text-sm text-gray-500 mb-4">{job.company} | {job.location}</p>
 
                 <form onSubmit={handleApply} className="space-y-6">
@@ -116,7 +116,7 @@ export default function ApplyJobPage() {
                     </div>
 
                     <div className="flex justify-center">
-                        <Button type="submit" disabled={loading}>
+                        <Button type="submit" disabled={loading} className="bg-purple-600 hover:bg-purple-700">
                             {loading ? (
                                 <div className="flex items-center gap-2">
                                     <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

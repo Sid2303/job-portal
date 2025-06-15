@@ -70,7 +70,7 @@ export default function JobDetailsPage() {
     return (
         <div className="min-h-screen p-6 md:p-10 bg-gray-50">
             <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
-                <h1 className="text-3xl font-bold text-blue-800 mb-2">{job.title}</h1>
+                <h1 className="text-3xl font-bold text-purple-600 mb-2">{job.title}</h1>
                 <h2 className="text-xl text-gray-700 mb-1">{job.company}</h2>
                 <p className="text-gray-500 mb-4">{job.location} • {job.type}</p>
 
@@ -95,7 +95,7 @@ export default function JobDetailsPage() {
                     {userRole !== "recruiter" && (
                         <Button
                             onClick={handleApply}
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                            className="bg-purple-600 hover:bg-purple-700 text-white"
                         >
                             Apply Now
                         </Button>
